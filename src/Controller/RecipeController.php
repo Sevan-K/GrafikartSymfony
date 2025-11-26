@@ -87,7 +87,7 @@ final class RecipeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $recipe->setUpdatedAt(new DateTimeImmutable());
+            // $recipe->setUpdatedAt(new DateTimeImmutable());
             $em->flush();
             $this->addFlash('success', 'La recette a bien été modifiée');
 
@@ -108,8 +108,8 @@ final class RecipeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $recipe->setCreateAt(new DateTimeImmutable());
-            $recipe->setUpdatedAt(new DateTimeImmutable());
+            // $recipe->setCreateAt(new DateTimeImmutable());
+            // $recipe->setUpdatedAt(new DateTimeImmutable());
             $em->persist($recipe);
             $em->flush();
             $this->addFlash('success', 'La recette a bien été crée');
