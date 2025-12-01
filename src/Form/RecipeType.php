@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Event\PostSubmitEvent;
 use Symfony\Component\Form\Event\PreSubmitEvent;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -25,7 +26,8 @@ class RecipeType extends AbstractType
     {
         $builder
             ->add('title', TextType::class,  [
-                'label' => 'Titre'
+                'label' => 'Titre',
+                'empty_data' => '',
             ])
             ->add('slug', TextType::class, [
                 'required' => false,
@@ -36,7 +38,8 @@ class RecipeType extends AbstractType
                 // ])
             ])
             ->add('content', TextareaType::class, [
-                'label' => 'Contenu'
+                'label' => 'Contenu',
+                'empty_data' => '',
             ])
             // ->add('createAt', null, [
             //     'widget' => 'single_text',
@@ -44,7 +47,7 @@ class RecipeType extends AbstractType
             // ->add('updatedAt', null, [
             //     'widget' => 'single_text',
             // ])
-            ->add('duration', TextType::class, [
+            ->add('duration', IntegerType::class, [
                 'label' => 'Temps de préparation'
             ])
             ->add('save', SubmitType::class, [
@@ -85,6 +88,7 @@ class RecipeType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Recipe::class,
+            // 'validation_groups' => ['Default', 'Extra']
         ]);
     }
 }

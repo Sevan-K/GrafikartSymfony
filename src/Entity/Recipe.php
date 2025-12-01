@@ -22,16 +22,17 @@ class Recipe
     #[ORM\Column(length: 255)]
     #[Assert\Length(min: 5)]
     #[BanWord()]
-    private ?string $title = null;
+    // #[BanWord(groups: ['Extra'])]
+    private string $title = '';
 
     #[ORM\Column(length: 255)]
     #[Assert\Length(min: 5)]
     #[Assert\Regex('/^[a-z0-9]+(?:-[a-z0-9]+)*$/')]
-    private ?string $slug = null;
+    private string $slug = '';
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\Length(min: 5)]
-    private ?string $content = null;
+    private string $content = '';
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createAt = null;
@@ -40,6 +41,7 @@ class Recipe
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(nullable: true)]
+    // #[Assert\NotBlank()]
     #[Assert\Positive()]
     #[Assert\LessThan(value: 1440)]
     private ?int $duration = null;

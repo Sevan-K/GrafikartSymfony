@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Demo;
 use App\Entity\Recipe;
 use App\Form\RecipeType;
 use App\Repository\RecipeRepository;
@@ -13,16 +14,28 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Stamp\ReceivedStamp;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\VarDumper\Cloner\Data;
 
 final class RecipeController extends AbstractController
 {
+    public function __construct(private RecipeRepository $repository) {}
+
+    // #[Route('/recette/demo', name: 'recipe.demo')]
+    // public function demo(Demo $demo)
+    // {
+    //     dd($demo);
+    // }
+
     #[Route('/recette', name: 'recipe.index')]
-    public function index(Request $request, RecipeRepository $repository): Response
+    public function index(): Response
     {
+
+        // dd($this->container->get('validator'));
+
         // dd($repository->findTotalDuration());
         // $recipes = $em->getRepository(Recipe::class)->findAll();
-        $recipes = $repository->findWithDurationLowerThan(20);
+        $recipes = $this->repository->findWithDurationLowerThan(20);
         // $recipes[0]->setTitle('Pâtes Bolognaises');
 
         // add recipe
@@ -43,7 +56,6 @@ final class RecipeController extends AbstractController
 
         // $em->flush();
 
-
         return $this->render(
             'recipe/index.html.twig',
             [
@@ -56,9 +68,9 @@ final class RecipeController extends AbstractController
         'id' => '\d+',
         'slug' => '[a-z0-9-]+'
     ])]
-    public function show(Request $request, string $slug, int $id, RecipeRepository $repository): Response
+    public function show(string $slug, int $id): Response
     {
-        $recipe = $repository->find($id);
+        $recipe = $this->repository->find($id);
 
         if ($recipe->getSlug() !== $slug) {
             return $this->redirectToRoute('recipe.show', [
