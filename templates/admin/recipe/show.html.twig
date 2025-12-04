@@ -1,0 +1,15 @@
+{% extends 'admin/admin.html.twig' %}
+
+{% block title "Recette : " ~ recipe.title %}
+
+{% block body %}
+	<h1>
+		{{ recipe.title }}
+	</h1>
+	<p>
+		{{ recipe.content | nl2br }}
+	</p>
+	<a	class="btn btn-primary btn-sm"	href="{{ path('admin.recipe.edit', {id: recipe.id}) }}">
+		Editer
+	</a>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% apply inky_to_html %}
+<container>
+    <row class="header">
+        <columns>
+            <spacer size="16"></spacer>
+            <h1 class="text-center">
+                Mail de contact
+            </h1>
+        </columns>
+    </row>
+</container>
+<container>
+    <row>
+        <strong>
+            Nom :
+        </strong>
+        {{ data.name }}
+    </row>
+    <row>
+        <strong>
+            Email :
+        </strong>
+        {{ data.email }}
+    </row>
+    <row>
+        <strong>
+            Service :
+        </strong>
+        {{ data.service }}
+    </row>
+    <row>
+        <p>
+            <strong>
+                Message :
+            </strong>
+            {{ data.content | nl2br }}
+        </p>
+    </row>
+</container>
+{% endapply %}
