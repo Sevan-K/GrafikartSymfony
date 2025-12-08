@@ -31,8 +31,8 @@ class FormListenerFactory
         return function (PostSubmitEvent $event) {
             $data = $event->getData();
 
-            if (!$data->getCreateAt()) {
-                $data->setCreateAt(new DateTimeImmutable());
+            if (!$data->getCreatedAt()) {
+                $data->setCreatedAt(new DateTimeImmutable());
             }
             $data->setUpdatedAt(new DateTimeImmutable());
         };

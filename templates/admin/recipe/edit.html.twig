@@ -3,6 +3,23 @@
 {% block title "Recette : " ~ recipe.title %}
 
 {% block body %}
-	<h1>{{ recipe.title }}</h1>
-	{{ form(form) }}
-{% endblock %}
+
+	{% if recipe.thumbnail != null %}
+		<div	class="row">
+			<div	class="col-sm-2">
+				<p>
+					<img	class="img-fluid"	src="{{ vich_uploader_asset(recipe, 'thumbnailFile' ) }}"	alt="Image de la recette {{ recipe.title }}, {{ recipe.thumbnail }}"></p>
+				</div>
+				<div	class="col-sm-10">
+					<h1>
+						{{ recipe.title }}
+					</h1>
+				</div>
+			</div>
+		{% else %}
+			<h1>
+				{{ recipe.title }}
+			</h1>
+		{% endif %}
+		{{ form(form) }}{% endblock %}
+		

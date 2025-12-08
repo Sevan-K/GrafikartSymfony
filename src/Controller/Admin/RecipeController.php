@@ -3,12 +3,15 @@
 namespace App\Controller\Admin;
 
 use App\Demo;
+use App\Entity\Category;
 use App\Entity\Recipe;
 use App\Form\RecipeType;
+use App\Repository\CategoryRepository;
 use App\Repository\RecipeRepository;
 use \DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +20,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\VarDumper\Cloner\Data;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 #[Route('/admin/recettes', name: 'admin.recipe.')]
 final class RecipeController extends AbstractController
@@ -30,8 +34,14 @@ final class RecipeController extends AbstractController
     // }
 
     #[Route('/', name: 'index')]
-    public function index(): Response
+    public function index(CategoryRepository $categoryRepository, EntityManagerInterface $em): Response
     {
+
+        // $rice = $this->repository->findOneBy(['slug' => 'riz-cantonais']);
+        // $mainDish = $categoryRepository->findOneBy(['slug' => 'plat-principal']);
+        // $rice->setCategory($mainDish);
+        // $em->flush();
+        // dd($rice);
 
         // dd($this->container->get('validator'));
 
@@ -54,8 +64,17 @@ final class RecipeController extends AbstractController
 
         // Remove a recipe
         // $em->remove($recipes[0]);
+        // $em->flush();
 
 
+        // $category = (new Category())->setCreatedAt(new DateTimeImmutable())
+        //     ->setUpdatedAt(new DateTimeImmutable())
+        //     ->setName('demo')
+        //     ->setSlug('demo');
+
+
+
+        // $recipes[0]->setCategory($category);
         // $em->flush();
 
         return $this->render(
@@ -114,9 +133,10 @@ final class RecipeController extends AbstractController
     }
 
     #[Route('/{id}', name: 'edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    public function edit(Recipe $recipe, Request $request, EntityManagerInterface $em): Response
+    public function edit(Recipe $recipe, Request $request, EntityManagerInterface $em, UploaderHelper $helper): Response
     {
         // Symfony finds the recipe with the id
+        // dd($helper->asset($recipe, 'thumbnailFile'));
 
         $form = $this->createForm(RecipeType::class, $recipe);
         // Update the $recipe instance of Recipe Entity with form data
@@ -124,6 +144,16 @@ final class RecipeController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // $recipe->setUpdatedAt(new DateTimeImmutable());
+            // /**
+            //  * @var UploadedFile
+            //  */
+            // $file = $form->get('thumbnailFile')->getData();
+            // $fileName = $recipe->getId() . '.' . $file->getClientOriginalExtension();
+            // // dd($this->getParameter('kernel.project_dir'));
+            // $file->move($this->getParameter('kernel.project_dir') . '/public/images/recipes', $fileName);
+            // $recipe->setThumbnail($fileName);
+            // // dd($file->getClientOriginalName(), $file->getClientOriginalExtension());
+
             $em->flush();
             $this->addFlash('success', 'La recette a bien été modifiée');
 
