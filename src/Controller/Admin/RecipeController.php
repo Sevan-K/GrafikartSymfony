@@ -18,11 +18,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Stamp\ReceivedStamp;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\VarDumper\Cloner\Data;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 #[Route('/admin/recettes', name: 'admin.recipe.')]
+#[IsGranted('ROLE_ADMIN')]
 final class RecipeController extends AbstractController
 {
     public function __construct(private RecipeRepository $repository) {}
@@ -36,6 +38,8 @@ final class RecipeController extends AbstractController
     #[Route('/', name: 'index')]
     public function index(CategoryRepository $categoryRepository, EntityManagerInterface $em): Response
     {
+
+        // $this->denyAccessUnlessGranted('ROLE_USER');
 
         // $rice = $this->repository->findOneBy(['slug' => 'riz-cantonais']);
         // $mainDish = $categoryRepository->findOneBy(['slug' => 'plat-principal']);
