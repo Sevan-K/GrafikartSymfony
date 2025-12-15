@@ -36,7 +36,7 @@ final class RecipeController extends AbstractController
     // }
 
     #[Route('/', name: 'index')]
-    public function index(CategoryRepository $categoryRepository, EntityManagerInterface $em): Response
+    public function index(CategoryRepository $categoryRepository, Request $request): Response
     {
 
         // $this->denyAccessUnlessGranted('ROLE_USER');
@@ -51,7 +51,6 @@ final class RecipeController extends AbstractController
 
         // dd($repository->findTotalDuration());
         // $recipes = $em->getRepository(Recipe::class)->findAll();
-        $recipes = $this->repository->findWithDurationLowerThan(20);
         // $recipes[0]->setTitle('Pâtes Bolognaises');
 
         // add recipe
@@ -81,10 +80,23 @@ final class RecipeController extends AbstractController
         // $recipes[0]->setCategory($category);
         // $em->flush();
 
+        // $recipes = $this->repository->findWithDurationLowerThan(20);
+
+        // $limit = 2;
+        $page = $request->query->getInt('page', 1);
+        $titleFilter = $request->query->getString('titleFilter', '');
+
+        $recipes = $this->repository->paginateRecipes($page, $titleFilter);
+        // $pages = ceil($recipes->getTotalItemCount() / $limit);
+
+        // dd($recipes->count());
+
         return $this->render(
             'admin/recipe/index.html.twig',
             [
-                'recipes' => $recipes
+                'recipes' => $recipes,
+                // 'pages' => $pages,
+                // 'page' => $page,
             ]
         );
     }
