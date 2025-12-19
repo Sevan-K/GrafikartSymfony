@@ -23,8 +23,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\VarDumper\Cloner\Data;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
-#[Route('/admin/recettes', name: 'admin.recipe.')]
 #[IsGranted('ROLE_ADMIN')]
+#[Route('/admin/recipes', 'admin.recipe.')]
 final class RecipeController extends AbstractController
 {
     public function __construct(private RecipeRepository $repository) {}
@@ -149,9 +149,10 @@ final class RecipeController extends AbstractController
     }
 
     #[Route('/{id}', name: 'edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    public function edit(Recipe $recipe, Request $request, EntityManagerInterface $em, UploaderHelper $helper): Response
+    public function edit(Recipe $recipe, Request $request, EntityManagerInterface $em): Response
     {
         // Symfony finds the recipe with the id
+        // UploaderHelper $helper
         // dd($helper->asset($recipe, 'thumbnailFile'));
 
         $form = $this->createForm(RecipeType::class, $recipe);

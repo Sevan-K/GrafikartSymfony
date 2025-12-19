@@ -25,7 +25,7 @@ class RecipeRepository extends ServiceEntityRepository
      * @param string $titleFilter
      * @return PaginationInterface<int, mixed>
      */
-    public function paginateRecipes(int $page, string $titleFilter): PaginationInterface
+    public function paginateRecipes(int $page, ?string $titleFilter = ''): PaginationInterface
     {
         // return new Paginator(
         //     $this->createQueryBuilder('r')
